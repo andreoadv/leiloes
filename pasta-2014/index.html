@@ -99,17 +99,17 @@ footer{text-align:center;padding:1.5rem;font-size:11px;color:var(--gray);border-
         <div class="field"><label>Reforma estimada (R$)</label><input type="number" id="ref" value="0" onchange="calc()"></div>
       </div>
       <div class="card" style="margin-top:1rem">
-        <div class="card-title">Premissas <span style="font-weight:400;color:var(--gray)">(editáveis)</span></div>
-        <div class="grid-2" style="gap:.5rem">
-          <div class="field"><label>Juros a.a. (%)</label><input type="number" id="pJuros" value="12" step="0.5" onchange="calc()"></div>
-          <div class="field"><label>IR venda (%)</label><input type="number" id="pIR" value="15" onchange="calc()"></div>
-          <div class="field"><label>ITBI (%)</label><input type="number" id="pITBI" value="3" onchange="calc()"></div>
-          <div class="field"><label>Leiloeiro (%)</label><input type="number" id="pLeil" value="5" onchange="calc()"></div>
-          <div class="field"><label>Corretagem (%)</label><input type="number" id="pCorr" value="6" onchange="calc()"></div>
-          <div class="field"><label>Assessoria (%)</label><input type="number" id="pAss" value="10" onchange="calc()"></div>
-          <div class="field"><label>Cartório (R$)</label><input type="number" id="pCart" value="3240" onchange="calc()"></div>
-          <div class="field"><label>Prazo (meses)</label><input type="number" id="pPrazo" value="12" min="1" max="36" onchange="calc()"></div>
-        </div>
+        <div class="card-title">Premissas da análise <span style="font-weight:400;color:var(--gray);text-transform:none;letter-spacing:0">(fixas — conforme análise oficial)</span></div>
+        <table style="font-size:13px;width:100%;border-collapse:collapse">
+          <tr style="border-bottom:1px solid var(--border)"><td style="padding:6px 4px;color:var(--slate)">Juros (custo de oportunidade)</td><td style="padding:6px 4px;text-align:right;font-weight:600;color:var(--navy)">12% a.a.</td></tr>
+          <tr style="border-bottom:1px solid var(--border);background:var(--light)"><td style="padding:6px 4px;color:var(--slate)">IR sobre ganho de capital</td><td style="padding:6px 4px;text-align:right;font-weight:600;color:var(--navy)">15%</td></tr>
+          <tr style="border-bottom:1px solid var(--border)"><td style="padding:6px 4px;color:var(--slate)">ITBI</td><td style="padding:6px 4px;text-align:right;font-weight:600;color:var(--navy)">3%</td></tr>
+          <tr style="border-bottom:1px solid var(--border);background:var(--light)"><td style="padding:6px 4px;color:var(--slate)">Comissão do leiloeiro</td><td style="padding:6px 4px;text-align:right;font-weight:600;color:var(--navy)">5%</td></tr>
+          <tr style="border-bottom:1px solid var(--border)"><td style="padding:6px 4px;color:var(--slate)">Corretagem na venda</td><td style="padding:6px 4px;text-align:right;font-weight:600;color:var(--navy)">6%</td></tr>
+          <tr style="border-bottom:1px solid var(--border);background:var(--light)"><td style="padding:6px 4px;color:var(--slate)">Assessoria jurídica</td><td style="padding:6px 4px;text-align:right;font-weight:600;color:var(--navy)">10%</td></tr>
+          <tr style="border-bottom:1px solid var(--border)"><td style="padding:6px 4px;color:var(--slate)">Cartório (registro)</td><td style="padding:6px 4px;text-align:right;font-weight:600;color:var(--navy)">R$ 3.240</td></tr>
+          <tr><td style="padding:6px 4px;color:var(--slate);background:var(--light)">Prazo base</td><td style="padding:6px 4px;text-align:right;font-weight:600;color:var(--navy);background:var(--light)">12 meses</td></tr>
+        </table>
       </div>
     </div>
     <div>
@@ -150,9 +150,9 @@ const fP=n=>(n*100).toFixed(1)+'%';
 const g=id=>parseFloat(document.getElementById(id).value)||0;
 function calc(){
   const vp=g('vp'),vm=g('vm'),dip=g('dip'),dco=g('dco'),ref=g('ref');
-  const juros=g('pJuros')/100,ir=g('pIR')/100,itbi=g('pITBI')/100;
-  const leil=g('pLeil')/100,corr=g('pCorr')/100,ass=g('pAss')/100;
-  const cart=g('pCart'),prazo=Math.max(1,g('pPrazo'));
+  const juros=0.12,ir=0.15,itbi=0.03;
+  const leil=0.05,corr=0.06,ass=0.10;
+  const cart=3240,prazo=12;
   const comLeil=vp*leil,assVal=vp*ass,itbiVal=vp*itbi;
   const custo=vp+comLeil+assVal+itbiVal+cart+dip+dco+ref;
   const vmLiq=vm*(1-corr);

@@ -89,8 +89,8 @@
       <label>Custas de registro/emolumentos (R$)</label>
       <input type="number" id="custas" value="30000" step="1000">
 
-      <label>Desocupação / imissão de posse (R$)</label>
-      <input type="number" id="desocupacao" value="20000" step="1000">
+      <label>Assessoria jurídica — % sobre o valor da arrematação <span class="rangeval" id="assessoriaLbl">10</span>%</label>
+      <input type="range" id="assessoriaPct" min="5" max="15" step="1" value="10">
 
       <label>Prazo do ciclo até a revenda (meses) <span class="rangeval" id="prazoLbl">12</span></label>
       <input type="range" id="prazo" min="6" max="24" step="1" value="12">
@@ -119,7 +119,8 @@
       <div class="metric"><span class="lbl">Lance</span><span class="val" id="outLance"></span></div>
       <div class="metric"><span class="lbl">ITBI</span><span class="val" id="outItbi"></span></div>
       <div class="metric"><span class="lbl">Débitos assumidos</span><span class="val" id="outDebitos"></span></div>
-      <div class="metric"><span class="lbl">Custas + desocupação</span><span class="val" id="outCustas"></span></div>
+      <div class="metric"><span class="lbl">Custas de registro</span><span class="val" id="outCustas"></span></div>
+      <div class="metric"><span class="lbl">Assessoria jurídica</span><span class="val" id="outAssessoria"></span></div>
       <div class="metric total"><span class="lbl">Custo Total</span><span class="val" id="outCustoTotal"></span></div>
       <div class="metric"><span class="lbl">VM (ajustado p/ negociação)</span><span class="val" id="outVmAjustado"></span></div>
       <div class="metric total"><span class="lbl">VM Líquido (pós corretagem revenda)</span><span class="val" id="outVmLiquido"></span></div>
@@ -137,7 +138,9 @@
       </div>
       <div class="metric" style="margin-top:14px"><span class="lbl">Ciclo</span><span class="val" id="outPrazoTxt"></span></div>
       <div class="disclaimer">
-        Sem avaliação oficial publicada pelo comitente para este lote (leilão extrajudicial de lote único).
+        A assessoria jurídica (percentual sobre o valor da arrematação) cobre todo o serviço — habilitação, acompanhamento
+        do leilão, registro, cobrança/regularização dos débitos condominiais e imissão de posse — sem custos adicionais
+        de desocupação. Sem avaliação oficial publicada pelo comitente para este lote (leilão extrajudicial de lote único).
         O VM utilizado tem como base comparáveis diretos anunciados no próprio Condomínio Edifício Gauguin
         (unidade tipo 380m² úteis / 6 vagas). Ferramenta de apoio — não substitui due diligence, análise de matrícula
         atualizada e conferência de custas junto ao 1º RI de Santo André.
@@ -173,7 +176,7 @@ function recalc(){
   const debitos = parseFloat(document.getElementById('debitos').value)||0;
   const itbiPct = parseFloat(document.getElementById('itbiPct').value)||0;
   const custas = parseFloat(document.getElementById('custas').value)||0;
-  const desocupacao = parseFloat(document.getElementById('desocupacao').value)||0;
+  const assessoriaPct = parseFloat(document.getElementById('assessoriaPct').value)||0;
   const prazo = parseInt(document.getElementById('prazo').value);
 
   const vmAnuncio = parseFloat(document.getElementById('vmAnuncio').value)||0;
@@ -186,10 +189,11 @@ function recalc(){
   document.getElementById('descLbl').textContent = document.getElementById('desconto').value;
   document.getElementById('corrLbl').textContent = document.getElementById('corretagem').value;
   document.getElementById('irLbl').textContent = document.getElementById('irPct').value;
+  document.getElementById('assessoriaLbl').textContent = document.getElementById('assessoriaPct').value;
 
   const itbi = lance*(itbiPct/100);
-  const custosFixos = custas + desocupacao;
-  const custoTotal = lance + itbi + debitos + custosFixos;
+  const assessoria = lance*(assessoriaPct/100);
+  const custoTotal = lance + itbi + debitos + custas + assessoria;
 
   const vmAjustado = vmAnuncio*(1-desconto);
   const vmLiquido = vmAjustado*(1-corretagem);
@@ -204,7 +208,8 @@ function recalc(){
   document.getElementById('outLance').textContent = fmt(lance);
   document.getElementById('outItbi').textContent = fmt(itbi);
   document.getElementById('outDebitos').textContent = fmt(debitos);
-  document.getElementById('outCustas').textContent = fmt(custosFixos);
+  document.getElementById('outCustas').textContent = fmt(custas);
+  document.getElementById('outAssessoria').textContent = fmt(assessoria);
   document.getElementById('outCustoTotal').textContent = fmt(custoTotal);
   document.getElementById('outVmAjustado').textContent = fmt(vmAjustado);
   document.getElementById('outVmLiquido').textContent = fmt(vmLiquido);

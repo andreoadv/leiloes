@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora — Rua Flora, 90, Apto 91 — Vila Alpina, Santo André</title>
+<style>
+  :root{
+    --navy:#0D1B3E;
+    --navy-light:#16265a;
+    --gold:#C8A951;
+    --gold-light:#e6d09b;
+    --bg:#f4f5f8;
+    --white:#ffffff;
+    --text:#1c2333;
+    --muted:#6b7280;
+    --green:#1f8a52;
+    --red:#c0392b;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; font-family:'Segoe UI', Arial, sans-serif; background:var(--bg); color:var(--text);
+  }
+  .header{
+    background:linear-gradient(135deg, var(--navy), var(--navy-light));
+    color:#fff; padding:28px 20px; text-align:center;
+  }
+  .header h1{margin:0 0 6px; font-size:1.4rem; letter-spacing:.3px;}
+  .header p{margin:0; color:var(--gold-light); font-size:.95rem;}
+  .wrap{max-width:920px; margin:0 auto; padding:24px 16px 60px;}
+  .grid{display:grid; grid-template-columns:1fr 1fr; gap:20px;}
+  @media (max-width:760px){.grid{grid-template-columns:1fr;}}
+  .card{
+    background:var(--white); border-radius:14px; padding:22px;
+    box-shadow:0 2px 10px rgba(13,27,62,.08); margin-bottom:20px;
+  }
+  .card h2{
+    font-size:1.05rem; color:var(--navy); margin:0 0 16px;
+    border-bottom:2px solid var(--gold); padding-bottom:8px;
+  }
+  label{display:block; font-size:.85rem; color:var(--muted); margin:14px 0 4px;}
+  input[type=number], input[type=range]{
+    width:100%; padding:9px 10px; border:1px solid #d7dae2; border-radius:8px; font-size:.95rem;
+  }
+  input[type=range]{padding:0; accent-color:var(--gold);}
+  .rangeval{font-weight:600; color:var(--navy); float:right;}
+  .metric{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:11px 0; border-bottom:1px solid #eef0f4;
+  }
+  .metric:last-child{border-bottom:none;}
+  .metric .lbl{color:var(--muted); font-size:.88rem;}
+  .metric .val{font-weight:700; color:var(--navy); font-size:1rem;}
+  .metric.total .val{color:var(--green); font-size:1.15rem;}
+  .metric.neg .val{color:var(--red);}
+  .badge-tir{
+    background:var(--navy); color:#fff; border-radius:10px; padding:18px; text-align:center; margin-top:6px;
+  }
+  .badge-tir .num{font-size:2rem; font-weight:800; color:var(--gold);}
+  .badge-tir .cap{font-size:.8rem; color:#c8ceda; text-transform:uppercase; letter-spacing:.5px;}
+  .foot{text-align:center; color:var(--muted); font-size:.78rem; margin-top:30px; line-height:1.6;}
+  .disclaimer{
+    background:#fff8e6; border:1px solid var(--gold-light); border-radius:10px;
+    padding:14px 16px; font-size:.8rem; color:#5c4a10; margin-top:20px; line-height:1.5;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Rua Flora, 90 — Apto 91 · Ed. Gauguin · Vila Alpina, Santo André/SP</h1>
+  <p>Calculadora de viabilidade — Leilão Bradesco · Lote 29 · 21/08/2026</p>
+</div>
+
+<div class="wrap">
+  <div class="grid">
+    <div class="card">
+      <h2>Premissas de aquisição</h2>
+
+      <label>Valor do lance (R$) <span class="rangeval" id="lanceLbl">2.170.000</span></label>
+      <input type="range" id="lance" min="2170000" max="2670000" step="50000" value="2170000">
+
+      <label>Débitos condominiais/IPTU a assumir (R$)</label>
+      <input type="number" id="debitos" value="300000" step="10000">
+
+      <label>ITBI — alíquota Santo André</label>
+      <input type="number" id="itbiPct" value="3" step="0.5"> <span style="font-size:.8rem;color:var(--muted)">%</span>
+
+      <label>Custas de registro/emolumentos (R$)</label>
+      <input type="number" id="custas" value="30000" step="1000">
+
+      <label>Desocupação / imissão de posse (R$)</label>
+      <input type="number" id="desocupacao" value="20000" step="1000">
+
+      <label>Prazo do ciclo até a revenda (meses) <span class="rangeval" id="prazoLbl">12</span></label>
+      <input type="range" id="prazo" min="6" max="24" step="1" value="12">
+    </div>
+
+    <div class="card">
+      <h2>Premissas de mercado</h2>
+
+      <label>Valor médio dos comparáveis (R$) — anúncios no mesmo condomínio</label>
+      <input type="number" id="vmAnuncio" value="5550000" step="10000">
+
+      <label>Desconto de negociação sobre o anúncio <span class="rangeval" id="descLbl">8</span>%</label>
+      <input type="range" id="desconto" min="5" max="12" step="1" value="8">
+
+      <label>Corretagem na revenda <span class="rangeval" id="corrLbl">6</span>%</label>
+      <input type="range" id="corretagem" min="4" max="8" step="0.5" value="6">
+
+      <label>Alíquota de IR sobre ganho de capital <span class="rangeval" id="irLbl">15</span>%</label>
+      <input type="range" id="irPct" min="15" max="22.5" step="2.5" value="15">
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <h2>Resumo financeiro</h2>
+      <div class="metric"><span class="lbl">Lance</span><span class="val" id="outLance"></span></div>
+      <div class="metric"><span class="lbl">ITBI</span><span class="val" id="outItbi"></span></div>
+      <div class="metric"><span class="lbl">Débitos assumidos</span><span class="val" id="outDebitos"></span></div>
+      <div class="metric"><span class="lbl">Custas + desocupação</span><span class="val" id="outCustas"></span></div>
+      <div class="metric total"><span class="lbl">Custo Total</span><span class="val" id="outCustoTotal"></span></div>
+      <div class="metric"><span class="lbl">VM (ajustado p/ negociação)</span><span class="val" id="outVmAjustado"></span></div>
+      <div class="metric total"><span class="lbl">VM Líquido (pós corretagem revenda)</span><span class="val" id="outVmLiquido"></span></div>
+      <div class="metric"><span class="lbl">Lucro Líquido (pré-IR)</span><span class="val" id="outLucroPre"></span></div>
+      <div class="metric neg"><span class="lbl">IR sobre o ganho</span><span class="val" id="outIr"></span></div>
+      <div class="metric total"><span class="lbl">Lucro Líquido Final</span><span class="val" id="outLucroFinal"></span></div>
+      <div class="metric"><span class="lbl">% Ganho sobre Custo Total</span><span class="val" id="outPctGanho"></span></div>
+    </div>
+
+    <div class="card">
+      <h2>Retorno anualizado</h2>
+      <div class="badge-tir">
+        <div class="num" id="outTir">—</div>
+        <div class="cap">TIR anualizada (Newton-Raphson)</div>
+      </div>
+      <div class="metric" style="margin-top:14px"><span class="lbl">Ciclo</span><span class="val" id="outPrazoTxt"></span></div>
+      <div class="disclaimer">
+        Sem avaliação oficial publicada pelo comitente para este lote (leilão extrajudicial de lote único).
+        O VM utilizado tem como base comparáveis diretos anunciados no próprio Condomínio Edifício Gauguin
+        (unidade tipo 380m² úteis / 6 vagas). Ferramenta de apoio — não substitui due diligence, análise de matrícula
+        atualizada e conferência de custas junto ao 1º RI de Santo André.
+      </div>
+    </div>
+  </div>
+
+  <div class="foot">
+    Andreo Advocacia · OAB/SP 287.684 — Ferramenta de apoio à decisão, sem caráter de recomendação de investimento.
+  </div>
+</div>
+
+<script>
+function fmt(v){
+  return v.toLocaleString('pt-BR', {style:'currency', currency:'BRL', maximumFractionDigits:0});
+}
+
+function tirAnualNewton(custo, vm, meses){
+  // Resolve (1+r)^meses = vm/custo via Newton-Raphson sobre f(r) = custo*(1+r)^meses - vm
+  let r = 0.02; // chute inicial mensal
+  for(let i=0;i<100;i++){
+    const f = custo*Math.pow(1+r, meses) - vm;
+    const fPrime = custo*meses*Math.pow(1+r, meses-1);
+    const rNext = r - f/fPrime;
+    if(Math.abs(rNext-r) < 1e-10){ r = rNext; break; }
+    r = rNext;
+  }
+  return Math.pow(1+r, 12) - 1;
+}
+
+function recalc(){
+  const lance = parseFloat(document.getElementById('lance').value);
+  const debitos = parseFloat(document.getElementById('debitos').value)||0;
+  const itbiPct = parseFloat(document.getElementById('itbiPct').value)||0;
+  const custas = parseFloat(document.getElementById('custas').value)||0;
+  const desocupacao = parseFloat(document.getElementById('desocupacao').value)||0;
+  const prazo = parseInt(document.getElementById('prazo').value);
+
+  const vmAnuncio = parseFloat(document.getElementById('vmAnuncio').value)||0;
+  const desconto = parseFloat(document.getElementById('desconto').value)/100;
+  const corretagem = parseFloat(document.getElementById('corretagem').value)/100;
+  const irPct = parseFloat(document.getElementById('irPct').value)/100;
+
+  document.getElementById('lanceLbl').textContent = lance.toLocaleString('pt-BR');
+  document.getElementById('prazoLbl').textContent = prazo;
+  document.getElementById('descLbl').textContent = document.getElementById('desconto').value;
+  document.getElementById('corrLbl').textContent = document.getElementById('corretagem').value;
+  document.getElementById('irLbl').textContent = document.getElementById('irPct').value;
+
+  const itbi = lance*(itbiPct/100);
+  const custosFixos = custas + desocupacao;
+  const custoTotal = lance + itbi + debitos + custosFixos;
+
+  const vmAjustado = vmAnuncio*(1-desconto);
+  const vmLiquido = vmAjustado*(1-corretagem);
+
+  const lucroPre = vmLiquido - custoTotal;
+  const ir = Math.max(lucroPre,0)*irPct;
+  const lucroFinal = lucroPre - ir;
+  const pctGanho = lucroPre/custoTotal;
+
+  const tir = tirAnualNewton(custoTotal, vmLiquido, prazo);
+
+  document.getElementById('outLance').textContent = fmt(lance);
+  document.getElementById('outItbi').textContent = fmt(itbi);
+  document.getElementById('outDebitos').textContent = fmt(debitos);
+  document.getElementById('outCustas').textContent = fmt(custosFixos);
+  document.getElementById('outCustoTotal').textContent = fmt(custoTotal);
+  document.getElementById('outVmAjustado').textContent = fmt(vmAjustado);
+  document.getElementById('outVmLiquido').textContent = fmt(vmLiquido);
+  document.getElementById('outLucroPre').textContent = fmt(lucroPre);
+  document.getElementById('outIr').textContent = '- ' + fmt(ir);
+  document.getElementById('outLucroFinal').textContent = fmt(lucroFinal);
+  document.getElementById('outPctGanho').textContent = (pctGanho*100).toFixed(1)+'%';
+  document.getElementById('outTir').textContent = (tir*100).toFixed(1)+'%';
+  document.getElementById('outPrazoTxt').textContent = prazo + ' meses';
+}
+
+document.querySelectorAll('input').forEach(el=>el.addEventListener('input', recalc));
+recalc();
+</script>
+
+</body>
+</html>

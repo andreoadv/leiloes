@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora — Pasta 2287 · Rua das Figueiras, 455</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0D1B3E;--navy2:#1A2E5A;--gold:#C8A951;--gold-l:#F0E6C0;
+  --green:#16A34A;--green-l:#DCFCE7;--red:#DC2626;--red-l:#FEE2E2;
+  --slate:#475569;--light:#F1F5F9;--border:#E2E8F0;--white:#fff;--gray:#94A3B8;
+}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#F8FAFC;color:#1E293B;min-height:100vh}
+header{background:var(--navy);padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;height:56px;border-bottom:3px solid var(--gold)}
+.header-left{display:flex;align-items:center;gap:.75rem}
+.header-left span{color:var(--white);font-size:14px;opacity:.85}
+.header-badge{background:var(--gold);color:var(--navy);font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px}
+.wa-btn{display:flex;align-items:center;gap:6px;background:#25D366;color:white;font-size:12px;font-weight:600;padding:7px 14px;border-radius:8px;text-decoration:none}
+.wa-btn svg{width:16px;height:16px;fill:white}
+.container{max-width:1080px;margin:0 auto;padding:1.5rem}
+.info-header{background:var(--navy);border-radius:12px;padding:1.25rem 1.5rem;margin-bottom:1.25rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
+.info-header h1{color:var(--white);font-size:18px;font-weight:700}
+.info-header p{color:var(--gray);font-size:13px;margin-top:2px}
+.badges{display:flex;gap:.5rem;flex-wrap:wrap}
+.badge{font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px}
+.badge-gold{background:var(--gold-l);color:#92400E}
+.badge-red{background:var(--red-l);color:var(--red)}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem}
+@media(max-width:760px){.grid-2{grid-template-columns:1fr}}
+.card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:1.25rem;margin-bottom:1.25rem}
+.card-title{font-size:10px;font-weight:700;color:var(--slate);text-transform:uppercase;letter-spacing:.08em;margin-bottom:1rem;padding-bottom:.5rem;border-bottom:1px solid var(--border)}
+.field{display:flex;flex-direction:column;gap:4px;margin-bottom:.85rem}
+.field label{font-size:12px;font-weight:600;color:var(--slate)}
+.field input{font-size:14px;padding:8px 12px;border:1.5px solid var(--border);border-radius:8px;background:var(--white);color:#1E293B;width:100%}
+.field input:focus{outline:none;border-color:var(--navy)}
+.field .hint{font-size:11px;color:var(--gray)}
+.premises{display:grid;grid-template-columns:1fr 1fr;gap:.5rem .75rem}
+.premise-row{display:flex;justify-content:space-between;font-size:12.5px;padding:6px 0;border-bottom:1px dashed var(--border);color:var(--slate)}
+.premise-row b{color:var(--navy)}
+.result-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.6rem;margin-bottom:1rem}
+@media(max-width:640px){.result-grid{grid-template-columns:1fr 1fr}}
+.metric{background:var(--light);border:1px solid var(--border);border-radius:8px;padding:.65rem .85rem}
+.metric-label{font-size:10px;color:var(--gray);text-transform:uppercase;letter-spacing:.04em;margin-bottom:2px}
+.metric-val{font-size:17px;font-weight:700;color:var(--navy)}
+.metric-val.pos{color:var(--green)}
+.metric-val.neg{color:var(--red)}
+table{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:.5rem}
+th{background:var(--navy);color:var(--gold);padding:8px 12px;text-align:right;font-weight:600;white-space:nowrap}
+th:first-child{text-align:left;border-radius:6px 0 0 0}
+th:last-child{border-radius:0 6px 0 0}
+td{padding:8px 12px;text-align:right;border-bottom:1px solid var(--border)}
+td:first-child{text-align:left;font-weight:600;color:var(--slate)}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:#FAFBFD}
+.warn-box{background:#FFFBEB;border:1px solid #FDE68A;border-radius:8px;padding:.85rem 1rem;font-size:12.5px;color:#92400E;line-height:1.5}
+footer{text-align:center;padding:1.5rem;font-size:11px;color:var(--gray);border-top:1px solid var(--border);margin-top:1rem}
+</style>
+</head>
+<body>
+<header>
+  <div class="header-left">
+    <span>Andreo Advocacia</span>
+    <span class="header-badge">Calculadora de Leilão</span>
+  </div>
+  <a class="wa-btn" href="https://wa.me/5511984670045" target="_blank">
+    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.36 5.07L2 22l5.05-1.32A9.94 9.94 0 0 0 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm0 18c-1.6 0-3.13-.43-4.43-1.23l-.32-.19-3 .78.8-2.93-.2-.32A7.94 7.94 0 0 1 4 12c0-4.41 3.59-8 8-8s8 3.59 8 8-3.59 8-8 8z"/></svg>
+    Falar no WhatsApp
+  </a>
+</header>
+
+<div class="container">
+  <div class="info-header">
+    <div>
+      <h1>Pasta 2287 · Prédio Comercial — Rua das Figueiras, 455</h1>
+      <p>Campestre, Santo André/SP · Alienação Fiduciária (Lei 9.514/97)</p>
+    </div>
+    <div class="badges">
+      <span class="badge badge-gold">Terreno 400 m² · Construído 202 m²</span>
+      <span class="badge badge-red">Imóvel ocupado</span>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">Dados editáveis</div>
+      <div class="field">
+        <label>Valor pago no arremate (R$)</label>
+        <input type="text" id="valorPago" value="2.573.614,85">
+        <span class="hint">Padrão: lance mínimo da 2ª praça</span>
+      </div>
+      <div class="field">
+        <label>Valor de mercado / venda (R$)</label>
+        <input type="text" id="valorMercado" value="5.147.229,71">
+        <span class="hint">Padrão: lance mínimo da 1ª praça — ver ressalva sobre dispersão de comparáveis no material</span>
+      </div>
+      <div class="field">
+        <label>Débitos (IPTU + condomínio, R$)</label>
+        <input type="text" id="debitos" value="0,00">
+      </div>
+      <div class="field">
+        <label>Reforma / retrofit (R$)</label>
+        <input type="text" id="reforma" value="0,00">
+      </div>
+      <div class="field">
+        <label>Prazo de holding até a venda (meses)</label>
+        <input type="text" id="holdingMeses" value="6">
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Premissas fixas</div>
+      <div class="premises">
+        <div class="premise-row"><span>Comissão leiloeira</span><b>5,0%</b></div>
+        <div class="premise-row"><span>ITBI</span><b>3,0%</b></div>
+        <div class="premise-row"><span>Assessoria jurídica</span><b>10,0%</b></div>
+        <div class="premise-row"><span>Comissão de venda</span><b>6,0%</b></div>
+        <div class="premise-row"><span>IR sobre ganho</span><b>15,0%</b></div>
+        <div class="premise-row"><span>IPTU carrying/mês</span><b>R$ 1.000</b></div>
+        <div class="premise-row"><span>Registro</span><b>R$ 2.964,83</b></div>
+        <div class="premise-row"><span>Cartório</span><b>R$ 4.778,12</b></div>
+      </div>
+      <div class="warn-box" style="margin-top:1rem">
+        O valor de mercado padrão usa o lance mínimo da 1ª praça. Os comparáveis levantados na web mostram grande dispersão (R$ 2.650 a R$ 21.250/m²) — ajuste este campo se tiver uma avaliação presencial mais precisa.
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Resultado — Cenário Atual</div>
+    <div class="result-grid">
+      <div class="metric"><div class="metric-label">Custo Total</div><div class="metric-val" id="outCustoTotal">—</div></div>
+      <div class="metric"><div class="metric-label">Valor Venda Líquido</div><div class="metric-val" id="outVendaLiquida">—</div></div>
+      <div class="metric"><div class="metric-label">IR sobre Ganho</div><div class="metric-val neg" id="outIR">—</div></div>
+      <div class="metric"><div class="metric-label">Lucro Líquido</div><div class="metric-val pos" id="outLucro">—</div></div>
+      <div class="metric"><div class="metric-label">% de Ganho</div><div class="metric-val pos" id="outPctGanho">—</div></div>
+      <div class="metric"><div class="metric-label">TIR anualizada</div><div class="metric-val pos" id="outTIR">—</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Sensibilidade de TIR — Prazo × Cenário de Venda</div>
+    <table>
+      <thead>
+        <tr><th>Prazo de Saída</th><th>Pessimista (-10%)</th><th>Base</th><th>Otimista (+10%)</th></tr>
+      </thead>
+      <tbody id="sensBody"></tbody>
+    </table>
+  </div>
+
+  <footer>Andreo Advocacia · OAB/SP 287.684 · Simulação para fins de análise preliminar — não constitui garantia de resultado.</footer>
+</div>
+
+<script>
+function parseBRL(str){
+  if(!str) return 0;
+  const clean = str.replace(/[R$\s]/g,'').replace(/\./g,'').replace(',', '.');
+  const v = parseFloat(clean);
+  return isNaN(v) ? 0 : v;
+}
+function fmtBRL(v){
+  return v.toLocaleString('pt-BR', {style:'currency', currency:'BRL'});
+}
+function fmtPct(v){
+  return (v*100).toLocaleString('pt-BR', {minimumFractionDigits:1, maximumFractionDigits:1}) + '%';
+}
+
+const PREMISES = {
+  comissaoLeiloeiro: 0.05,
+  itbi: 0.03,
+  assessoria: 0.10,
+  comissaoVenda: 0.06,
+  ir: 0.15,
+  registro: 2964.83,
+  cartorio: 4778.12,
+};
+
+function irrMonthly(cashflows, guess){
+  let r = guess || 0.03;
+  for(let iter=0; iter<200; iter++){
+    let npv=0, dnpv=0;
+    for(let t=0;t<cashflows.length;t++){
+      npv += cashflows[t]/Math.pow(1+r,t);
+      dnpv += -t*cashflows[t]/Math.pow(1+r,t+1);
+    }
+    if (dnpv === 0) break;
+    const rNew = r - npv/dnpv;
+    if(Math.abs(rNew-r) < 1e-9) return rNew;
+    r = rNew;
+  }
+  return r;
+}
+
+function computeScenario(valorPago, valorVenda, debitos, reforma, holdingMonths, ventaPctAdj){
+  const comissaoLeiloeiro = valorPago * PREMISES.comissaoLeiloeiro;
+  const assessoria = valorPago * PREMISES.assessoria;
+  const itbi = valorPago * PREMISES.itbi;
+  const custoUpfront = valorPago + comissaoLeiloeiro + debitos + reforma + assessoria + itbi + PREMISES.registro + PREMISES.cartorio;
+  const iptuMensal = 1000;
+  const custoTotal = custoUpfront + iptuMensal * holdingMonths;
+
+  const vendaAdj = valorVenda * (1 + (ventaPctAdj||0));
+  const comissaoVenda = vendaAdj * PREMISES.comissaoVenda;
+  const vendaLiquida = vendaAdj - comissaoVenda;
+  const diferenca = vendaLiquida - custoTotal;
+  const ir = diferenca > 0 ? diferenca * PREMISES.ir : 0;
+  const lucroLiquido = diferenca - ir;
+  const pctGanho = custoTotal !== 0 ? lucroLiquido / custoTotal : 0;
+
+  const cf = [];
+  cf[0] = -custoUpfront;
+  for(let m=1;m<holdingMonths;m++) cf[m] = -iptuMensal;
+  cf[holdingMonths] = (cf[holdingMonths]||0) + vendaLiquida - ir;
+  const rMonthly = irrMonthly(cf, 0.03);
+  const rAnual = Math.pow(1+rMonthly,12)-1;
+
+  return { custoTotal, vendaLiquida, ir, lucroLiquido, pctGanho, rAnual };
+}
+
+function recalc(){
+  const valorPago = parseBRL(document.getElementById('valorPago').value);
+  const valorMercado = parseBRL(document.getElementById('valorMercado').value);
+  const debitos = parseBRL(document.getElementById('debitos').value);
+  const reforma = parseBRL(document.getElementById('reforma').value);
+  const holding = Math.max(1, parseInt(document.getElementById('holdingMeses').value) || 6);
+
+  const base = computeScenario(valorPago, valorMercado, debitos, reforma, holding, 0);
+
+  document.getElementById('outCustoTotal').textContent = fmtBRL(base.custoTotal);
+  document.getElementById('outVendaLiquida').textContent = fmtBRL(base.vendaLiquida);
+  document.getElementById('outIR').textContent = fmtBRL(base.ir);
+  document.getElementById('outLucro').textContent = fmtBRL(base.lucroLiquido);
+  document.getElementById('outPctGanho').textContent = fmtPct(base.pctGanho);
+  document.getElementById('outTIR').textContent = fmtPct(base.rAnual);
+
+  const prazos = [6,12,18,24];
+  const cenarios = [{label:'pess', adj:-0.10},{label:'base', adj:0},{label:'otim', adj:0.10}];
+  const tbody = document.getElementById('sensBody');
+  tbody.innerHTML = '';
+  prazos.forEach(m => {
+    const row = document.createElement('tr');
+    let html = `<td>${m} meses</td>`;
+    cenarios.forEach(c => {
+      const r = computeScenario(valorPago, valorMercado, debitos, reforma, m, c.adj);
+      html += `<td>${fmtPct(r.rAnual)}</td>`;
+    });
+    row.innerHTML = html;
+    tbody.appendChild(row);
+  });
+}
+
+['valorPago','valorMercado','debitos','reforma','holdingMeses'].forEach(id => {
+  document.getElementById(id).addEventListener('input', recalc);
+});
+recalc();
+</script>
+</body>
+</html>

@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora — Alameda São Caetano, 229/231 · São Caetano do Sul</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0D1B3E;--navy2:#1A2E5A;--gold:#C8A951;--gold-l:#F0E6C0;
+  --green:#16A34A;--green-l:#DCFCE7;--red:#DC2626;--red-l:#FEE2E2;
+  --slate:#475569;--light:#F1F5F9;--border:#E2E8F0;--white:#fff;--gray:#94A3B8;
+}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#F8FAFC;color:#1E293B;min-height:100vh}
+header{background:var(--navy);padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;height:60px;border-bottom:3px solid var(--gold)}
+.header-left{display:flex;align-items:center;gap:.75rem}
+.logo{width:30px;height:30px;border-radius:50%;background:var(--gold);color:var(--navy);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px}
+.header-left span.name{color:var(--white);font-size:14px;font-weight:600}
+.header-badge{background:var(--gold);color:var(--navy);font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px}
+.wa-btn{display:flex;align-items:center;gap:6px;background:#25D366;color:white;font-size:12px;font-weight:600;padding:7px 14px;border-radius:8px;text-decoration:none}
+.wa-btn svg{width:16px;height:16px;fill:white}
+.container{max-width:1000px;margin:0 auto;padding:1.5rem}
+.info-header{background:var(--navy);border-radius:12px;padding:1.25rem 1.5rem;margin-bottom:1.25rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
+.info-header h1{color:var(--white);font-size:18px;font-weight:700}
+.info-header p{color:var(--gray);font-size:13px;margin-top:2px}
+.badges{display:flex;gap:.5rem;flex-wrap:wrap}
+.badge{font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px}
+.badge-gold{background:var(--gold-l);color:#92400E}
+.badge-navy{background:var(--navy2);color:var(--gold);border:1px solid var(--gold)}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem}
+@media(max-width:720px){.grid-2{grid-template-columns:1fr}}
+.card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:1.25rem;margin-bottom:1.25rem}
+.card-title{font-size:10px;font-weight:700;color:var(--slate);text-transform:uppercase;letter-spacing:.08em;margin-bottom:1rem;padding-bottom:.5rem;border-bottom:1px solid var(--border)}
+.field{display:flex;flex-direction:column;gap:4px;margin-bottom:.75rem}
+.field label{font-size:12px;font-weight:600;color:var(--slate)}
+.field input,.field select{font-size:14px;padding:8px 12px;border:1.5px solid var(--border);border-radius:8px;background:var(--white);color:#1E293B;width:100%}
+.field input:focus,.field select:focus{outline:none;border-color:var(--navy)}
+.field .hint{font-size:11px;color:var(--gray)}
+.premissas{display:grid;grid-template-columns:1fr 1fr;gap:.5rem .75rem;font-size:12px}
+.premissas div{display:flex;justify-content:space-between;padding:6px 8px;background:var(--light);border-radius:6px}
+.premissas span.v{font-weight:700;color:var(--navy)}
+.result-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.6rem;margin-bottom:1rem}
+@media(max-width:560px){.result-grid{grid-template-columns:1fr 1fr}}
+.metric{background:var(--light);border:1px solid var(--border);border-radius:8px;padding:.7rem .9rem}
+.metric-label{font-size:10px;color:var(--gray);text-transform:uppercase;letter-spacing:.04em;margin-bottom:2px}
+.metric-val{font-size:17px;font-weight:700;color:var(--navy)}
+.metric-val.pos{color:var(--green)}
+.metric-val.neg{color:var(--red)}
+.metric-val.warn{color:#D97706}
+.sens-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th{background:var(--navy);color:var(--gold);padding:8px 12px;text-align:right;font-weight:600;white-space:nowrap}
+th:first-child{text-align:left;border-radius:6px 0 0 0}
+th:last-child{border-radius:0 6px 0 0}
+td{padding:8px 12px;text-align:right;border-bottom:1px solid var(--border)}
+td:first-child{text-align:left;font-weight:600;color:var(--slate)}
+tr:last-child td{border-bottom:none}
+.pill{display:inline-block;padding:2px 9px;border-radius:20px;font-size:11px;font-weight:600}
+.pill.pos{background:var(--green-l);color:var(--green)}
+.pill.warn{background:#FEF3C7;color:#D97706}
+.note{font-size:11.5px;color:var(--slate);background:var(--light);border-left:3px solid var(--gold);padding:.7rem .9rem;border-radius:0 8px 8px 0;margin-top:.75rem;line-height:1.5}
+.section-title{font-size:15px;font-weight:700;color:var(--navy);margin:1.75rem 0 .75rem}
+.parc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem}
+@media(max-width:640px){.parc-grid{grid-template-columns:1fr}}
+.parc-card{background:var(--light);border:1px solid var(--border);border-radius:10px;padding:1rem}
+.parc-card .n{font-size:11px;color:var(--gray);text-transform:uppercase;letter-spacing:.05em}
+.parc-card .v{font-size:18px;font-weight:700;color:var(--navy);margin:4px 0}
+.parc-card .s{font-size:11px;color:var(--slate)}
+footer{text-align:center;padding:1.5rem;font-size:11px;color:var(--gray);border-top:1px solid var(--border);margin-top:1rem}
+</style>
+</head>
+<body>
+<header>
+  <div class="header-left">
+    <div class="logo">A</div>
+    <span class="name">Andreo Advocacia</span>
+    <span class="header-badge">Calculadora de Leilão</span>
+  </div>
+  <a class="wa-btn" href="https://wa.me/5511984670045" target="_blank">
+    <svg viewBox="0 0 24 24"><path d="M17.6 6.3A8 8 0 003.8 15.7L2.9 21l5.4-.9A8 8 0 1017.6 6.3z"/></svg>
+    Falar com Rodrigo
+  </a>
+</header>
+
+<div class="container">
+  <div class="info-header">
+    <div>
+      <h1>Alameda São Caetano, 229/231 — Santa Paula, São Caetano do Sul/SP</h1>
+      <p>Matrícula 4.111 · 1º CRI de São Caetano do Sul · Processo 0003977-56.2020.8.26.0565</p>
+    </div>
+    <div class="badges">
+      <span class="badge badge-gold">Leilão Judicial</span>
+      <span class="badge badge-navy">2ª Praça até 23/09/2026</span>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">Cenário de Arrematação</div>
+      <div class="field">
+        <label>Valor do lance (arrematação)</label>
+        <input type="text" id="valorPago" value="1.121.421,71">
+        <span class="hint">Mínimo da 2ª praça: R$ 1.121.421,71 · 1ª praça: R$ 2.242.843,42</span>
+      </div>
+      <div class="field">
+        <label>Valor de mercado para revenda (VM)</label>
+        <input type="text" id="vm" value="2.242.843,42">
+        <span class="hint">Avaliação judicial atualizada (1ª praça) — cenário conservador</span>
+      </div>
+      <div class="field">
+        <label>Débitos que se sub-rogam no preço (IPTU/condomínio)</label>
+        <input type="text" id="debitos" value="0,00">
+        <span class="hint">Edital: débitos tributários (R$ 92.278,74) sub-rogam-se sobre o preço da arrematação — não somam ao custo do arrematante</span>
+      </div>
+      <div class="field">
+        <label>Reforma / adequação estimada</label>
+        <input type="text" id="reforma" value="89.713,74">
+        <span class="hint">Estimativa preliminar (~8% do lance) — laudo aponta reparos simples a importantes; ajuste após vistoria</span>
+      </div>
+      <div class="field">
+        <label>Prazo de revenda (meses)</label>
+        <select id="prazo">
+          <option value="6">6 meses</option>
+          <option value="12" selected>12 meses</option>
+          <option value="18">18 meses</option>
+          <option value="24">24 meses</option>
+        </select>
+      </div>
+      <button onclick="calcular()" style="width:100%;padding:10px;border:none;border-radius:8px;background:var(--navy);color:#fff;font-weight:700;cursor:pointer;margin-top:.25rem">Recalcular</button>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Premissas Fixas do Modelo</div>
+      <div class="premissas">
+        <div>Comissão leiloeiro <span class="v">5%</span></div>
+        <div>Assessoria jurídica <span class="v">10%</span></div>
+        <div>ITBI <span class="v">3%</span></div>
+        <div>Corretagem na venda <span class="v">6%</span></div>
+        <div>IR sobre ganho de capital <span class="v">15%</span></div>
+        <div>Registro <span class="v">R$ 2.964,83</span></div>
+        <div>Cartório <span class="v">R$ 4.778,12</span></div>
+        <div>IPTU mensal (manutenção) <span class="v">R$ 500</span></div>
+      </div>
+      <div class="note">Premissas alinhadas à metodologia padrão da Andreo Advocacia para análise de oportunidades de leilão. O valor de mercado (VM) considerado no cenário-base é a própria avaliação judicial atualizada — nunca inflado por comparáveis de mercado — para manter a análise conservadora.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Resultado — Cenário Base</div>
+    <div class="result-grid">
+      <div class="metric"><div class="metric-label">Custo Total</div><div class="metric-val" id="rCustoTotal">—</div></div>
+      <div class="metric"><div class="metric-label">Venda Líq. Corretagem</div><div class="metric-val" id="rVendaLiq">—</div></div>
+      <div class="metric"><div class="metric-label">Lucro Líquido</div><div class="metric-val pos" id="rLucro">—</div></div>
+      <div class="metric"><div class="metric-label">% Ganho s/ Custo</div><div class="metric-val pos" id="rPctGanho">—</div></div>
+      <div class="metric"><div class="metric-label">IR sobre Ganho</div><div class="metric-val" id="rIR">—</div></div>
+      <div class="metric"><div class="metric-label">TIR anualizada</div><div class="metric-val pos" id="rTIR">—</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Sensibilidade — TIR anualizada por prazo e cenário de venda</div>
+    <div class="sens-wrap">
+      <table>
+        <thead><tr><th>Prazo</th><th>Pessimista (−10% VM)</th><th>Base (VM)</th><th>Otimista (+10% VM)</th></tr></thead>
+        <tbody id="sensBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section-title">Simulação de Parcelamento (art. 895, CPC)</div>
+  <div class="card">
+    <div class="card-title">Se arrematado pelo mínimo da 2ª praça — R$ 1.121.421,71</div>
+    <div class="parc-grid">
+      <div class="parc-card">
+        <div class="n">Entrada (25% à vista)</div>
+        <div class="v">R$ 280.355,43</div>
+        <div class="s">Depósito judicial em até 24h do encerramento da praça</div>
+      </div>
+      <div class="parc-card">
+        <div class="n">Saldo a parcelar (75%)</div>
+        <div class="v">R$ 841.066,28</div>
+        <div class="s">Em até 30 parcelas mensais (art. 895, I e II, CPC)</div>
+      </div>
+      <div class="parc-card">
+        <div class="n">Parcela mensal estimada</div>
+        <div class="v" id="parcelaMensal">—</div>
+        <div class="s">30x, com correção monetária + juros de 1% a.m. sobre saldo devedor</div>
+      </div>
+    </div>
+    <div class="note">A proposta de pagamento à vista tem preferência sobre as parceladas (art. 895, §7º, CPC). Em caso de inadimplência, incide multa de 5% sobre o valor da arrematação em favor do leiloeiro, que pode protestar e executar o título (art. 39, Decreto 21.981/32).</div>
+  </div>
+
+</div>
+
+<footer>Andreo Advocacia · OAB/SP 287.684 · Simulação estimativa, sem caráter vinculante. Valores sujeitos a confirmação em vistoria e nos autos do processo.</footer>
+
+<script>
+function parseNum(v){
+  return parseFloat(String(v).replace(/\./g,'').replace(',','.')) || 0;
+}
+function fmt(v){
+  return v.toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+}
+function fmtPct(v){
+  return (v*100).toLocaleString('pt-BR',{minimumFractionDigits:1,maximumFractionDigits:1})+'%';
+}
+
+const LEILOEIRO=0.05, ASSESSORIA=0.10, ITBI=0.03, CORRETAGEM=0.06, IR=0.15;
+const REGISTRO=2964.83, CARTORIO=4778.12, IPTU_MENSAL=500;
+
+function npv(rate, cfs){
+  return cfs.reduce((s,cf,i)=> s + cf/Math.pow(1+rate,i), 0);
+}
+function npvDeriv(rate, cfs){
+  return cfs.reduce((s,cf,i)=> s - i*cf/Math.pow(1+rate,i+1), 0);
+}
+function tirMensal(cfs){
+  let r=0.05;
+  for(let i=0;i<200;i++){
+    const f=npv(r,cfs), fp=npvDeriv(r,cfs);
+    if(Math.abs(fp)<1e-12) break;
+    const rn = r - f/fp;
+    if(Math.abs(rn-r)<1e-12){ r=rn; break; }
+    r=rn;
+  }
+  return r;
+}
+
+function modelo(valorPago, vm, debitos, reforma, prazoMeses){
+  const comissaoLeiloeiro = valorPago*LEILOEIRO;
+  const assessoria = valorPago*ASSESSORIA;
+  const itbi = valorPago*ITBI;
+  const custoTotal = valorPago + comissaoLeiloeiro + assessoria + reforma + itbi + REGISTRO + CARTORIO + debitos;
+
+  const comissaoVenda = vm*CORRETAGEM;
+  const vendaLiquida = vm - comissaoVenda;
+
+  const ganhoBruto = vendaLiquida - custoTotal;
+  const ir = Math.max(ganhoBruto,0)*IR;
+  const custosManutencao = prazoMeses*IPTU_MENSAL;
+  const lucro = ganhoBruto - ir - custosManutencao;
+  const pctGanho = lucro/custoTotal;
+
+  const cfs = [-custoTotal];
+  for(let m=1;m<prazoMeses;m++) cfs.push(-IPTU_MENSAL);
+  cfs.push(vendaLiquida - ir);
+  const rm = tirMensal(cfs);
+  const tirAnual = Math.pow(1+rm,12)-1;
+
+  return {custoTotal, vendaLiquida, ganhoBruto, ir, lucro, pctGanho, tirAnual};
+}
+
+function calcular(){
+  const valorPago = parseNum(document.getElementById('valorPago').value);
+  const vm = parseNum(document.getElementById('vm').value);
+  const debitos = parseNum(document.getElementById('debitos').value);
+  const reforma = parseNum(document.getElementById('reforma').value);
+  const prazo = parseInt(document.getElementById('prazo').value);
+
+  const r = modelo(valorPago, vm, debitos, reforma, prazo);
+
+  document.getElementById('rCustoTotal').textContent = fmt(r.custoTotal);
+  document.getElementById('rVendaLiq').textContent = fmt(r.vendaLiquida);
+  document.getElementById('rLucro').textContent = fmt(r.lucro);
+  document.getElementById('rLucro').className = 'metric-val ' + (r.lucro>=0?'pos':'neg');
+  document.getElementById('rPctGanho').textContent = fmtPct(r.pctGanho);
+  document.getElementById('rPctGanho').className = 'metric-val ' + (r.pctGanho>=0?'pos':'neg');
+  document.getElementById('rIR').textContent = fmt(r.ir);
+  document.getElementById('rTIR').textContent = fmtPct(r.tirAnual);
+  document.getElementById('rTIR').className = 'metric-val ' + (r.tirAnual>=0?'pos':'neg');
+
+  // sensitivity
+  const prazos=[6,12,18,24];
+  const cenarios=[{k:'pess',mult:0.9},{k:'base',mult:1.0},{k:'otim',mult:1.1}];
+  let rows='';
+  prazos.forEach(p=>{
+    let cells='';
+    cenarios.forEach(c=>{
+      const rr = modelo(valorPago, vm*c.mult, debitos, reforma, p);
+      const pillClass = rr.tirAnual>=0.3?'pos':(rr.tirAnual>=0?'warn':'neg');
+      cells += `<td><span class="pill ${pillClass}">${fmtPct(rr.tirAnual)}</span></td>`;
+    });
+    rows += `<tr><td>${p} meses</td>${cells}</tr>`;
+  });
+  document.getElementById('sensBody').innerHTML = rows;
+
+  // parcelamento (sempre com base no mínimo da 2a praça, fixo, art.895 CPC)
+  const lanceMin = 1121421.71;
+  const entrada = lanceMin*0.25;
+  const saldo = lanceMin*0.75;
+  const jurosM = 0.01;
+  const n=30;
+  const pmt = saldo * (jurosM*Math.pow(1+jurosM,n)) / (Math.pow(1+jurosM,n)-1);
+  document.getElementById('parcelaMensal').textContent = fmt(pmt);
+}
+
+calcular();
+</script>
+</body>
+</html>

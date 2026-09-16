@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora de Investimento — Sala 137, Centro Empresarial Pereira Barreto | Andreo Advocacia</title>
+<style>
+  :root{
+    --navy:#0D1B3E; --navy2:#142451; --gold:#C8A951; --gold-light:#E4D3A0;
+    --off:#F7F5EF; --gray:#5B6272; --dark:#1A1A1A; --green:#1E7A4C; --red:#8C2F2F;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; font-family: Georgia, 'Times New Roman', serif; background:var(--off); color:var(--dark);
+  }
+  header{
+    background:var(--navy); color:#fff; padding:28px 24px 22px; text-align:center;
+    border-bottom:4px solid var(--gold);
+  }
+  header img{height:52px; margin-bottom:8px;}
+  header h1{font-size:22px; margin:6px 0 2px; font-weight:700;}
+  header p{font-size:13px; color:#C7CBDA; margin:0; font-style:italic;}
+  .wrap{max-width:1080px; margin:0 auto; padding:28px 18px 60px;}
+  .grid{display:grid; grid-template-columns: 1fr 1fr; gap:22px;}
+  @media (max-width:820px){ .grid{grid-template-columns:1fr;} }
+  .card{
+    background:#fff; border:1px solid #E4DFCF; border-radius:10px; padding:22px 24px; box-shadow:0 2px 10px rgba(13,27,62,0.05);
+  }
+  .card h2{
+    font-size:13px; letter-spacing:1.5px; text-transform:uppercase; color:var(--gold);
+    margin:0 0 14px; border-bottom:2px solid var(--gold-light); padding-bottom:10px;
+  }
+  label{display:block; font-size:12.5px; color:var(--gray); margin:14px 0 4px; font-weight:bold;}
+  input[type=text]{
+    width:100%; padding:10px 12px; border:1.5px solid #D8D2BE; border-radius:6px; font-size:15px;
+    font-family: Georgia, serif; color:var(--navy); background:#FBFAF6;
+  }
+  input[type=text]:focus{outline:none; border-color:var(--gold);}
+  .hint{font-size:10.5px; color:#9096A5; margin-top:3px; font-style:italic;}
+  .presets{display:flex; gap:8px; margin-top:6px;}
+  .preset-btn{
+    flex:1; padding:8px 6px; font-size:11px; border:1.5px solid var(--gold); background:#fff; color:var(--navy);
+    border-radius:6px; cursor:pointer; font-family:Georgia,serif; font-weight:bold;
+  }
+  .preset-btn.active, .preset-btn:hover{background:var(--gold); color:var(--navy);}
+  .toggle-row{display:flex; gap:10px; margin-top:6px;}
+  .toggle-btn{
+    flex:1; padding:12px; border:1.5px solid var(--navy); background:#fff; color:var(--navy);
+    border-radius:6px; cursor:pointer; font-family:Georgia,serif; font-weight:bold; font-size:14px;
+  }
+  .toggle-btn.active{background:var(--navy); color:#fff;}
+  .fixed-list{list-style:none; padding:0; margin:0; font-size:12px; color:var(--gray);}
+  .fixed-list li{display:flex; justify-content:space-between; padding:5px 0; border-bottom:1px dashed #E4DFCF;}
+  .results{background:var(--navy); color:#fff;}
+  .results h2{color:var(--gold); border-bottom-color:#2A3B6B;}
+  .metric{display:flex; justify-content:space-between; align-items:baseline; padding:11px 0; border-bottom:1px solid #223058;}
+  .metric:last-child{border-bottom:none;}
+  .metric .label{font-size:12.5px; color:#B9C0D6;}
+  .metric .value{font-size:19px; font-weight:bold; color:#fff;}
+  .metric .value.gold{color:var(--gold);}
+  .big{
+    background:var(--gold); color:var(--navy); border-radius:8px; padding:16px 18px; margin:14px 0 6px; text-align:center;
+  }
+  .big .value{font-size:32px; font-weight:bold; display:block;}
+  .big .label{font-size:11.5px; text-transform:uppercase; letter-spacing:1px;}
+  footer{text-align:center; padding:22px; font-size:11px; color:var(--gray);}
+  .note{
+    background:var(--gold-light); border-radius:8px; padding:12px 16px; font-size:11.5px; color:#4A3E14; margin-top:16px; line-height:1.5;
+  }
+</style>
+</head>
+<body>
+<header>
+  <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAABTCAMAAAD0gJTPAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAKyUExURQAAAP///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////xDJ/bcAAADmdFJOUwADMQoLu0hB/5Cg0CUo4WN2/rAPDbb0NETuhAGI3hAc1v1dVrXoOS73io3NIhXV015g9k29qAyqxPI2aeSCdCcFqd0RFsMJYlnYuZjPJBnpky9suMgdxwZa/Oyi7x+HLKcCd0sOB84acfF+4H3qP6TlMNmzPPD1T/syQq4gK0xHKeMUZMXa6+3MvG54F/q6vjiRwEnzcz6f35WJj0Me0bc64lf4W1gbyrTXg5sIKstKBGpOnRLUf+ZfhW3CsXwTo2FTwWie+Td1i6GXXHs7jJbSr8kzem+AVJxReYZFIdtQZUamLa2yOi+87AAAAAlwSFlzAAAOwwAADsMBx2+oZAAABSZJREFUWEftl+lfVFUYx59hRjnKIkOsXQSRAcrYlHUqdRSlwEEE0ZEtHXEwUAoDWTQQEUESERjFNAQSgwgKTCQjKCFbrCi1xVza6//o85wZhnsP3Jnru+rT9wVzzu95fvfOnOU5B4D/HDI7OStJRzFvPitJx54sYCXpLCQOjqwmFSdnQhaxolRclIS4PsKq0nBzJ4R4eLKyNLy8CSHkUVaWBOeDXrLYlw1IwW8JNfsvZQNSCKBeQtzZgARkKrM5MIgN2Sb4MbOZPM6GbLNs2kueCGFjtggNw8EKp6+PYIO2WL6CELIiMgrN0TFs1DqyWHTFcS74oQ5mw9Z50hldT0HQ0/i5kg1bZxV6AleDZg021sazcWusW4+ehQkAz+CQPdwqs0ev8ll8TCI2k9gEK3Ab0KFNxjad74dZZRtT0LGJtlNxzogPmyJOmpIQ4m2qnLLNaE7fwuaIIYvD/K06U28bdjIC2CQxvDIxf5W5t4UOWZbU8r8Js7NzzD3uOexmbmeSRHB0wOwd+um+Vzb2dwqTxIjAXJJr6e+iQxZuECSJEENXZN7uGeX5DByySH6SGKn5aC7gKcl7UHHlKaLsxczCF/jSiygV7eNLc5PwEmYWC2amZL+H2qN0eu6sUIY/sDxNoOk9K7bvOyDhzQfxxYtf5kuKygNVVYcq4i2TJ0b1YbqeLP2aI9FJtUfr8vfXOx9rcH2lRpDMchy95abh0jUucsg8QWfdTHl9U5CCtVioOYk5eRoAMDS3WOo+n1Z7sWVuPIXx0wDQtoHONxahwNrYM6/OuPPPhrI2CncOo9mVEO9TaMosfK2s3c5PAQX0MWtpZSDpTqwROU8nOcvg2YHlQOnd2RUvM0VWv46Rg40tdJckprJOALiAke6Lb9AX7FnQwwvRU+BwNVQn4ULoFcwlRfYmZvRlqQkhJ1qET89Fj3IngOItfHn/gCAKAG+X0jd3E0LeGWRicjz5iMoNYOiSByEZ7zJxoMNFuTx7NdBjq84em7h34swlbprhK2ZrvoswQKmsx9AINjVNhJSXCMMR9FsT8t5VoW5CTjemAy0S7RmEvC+IynaYvPUXBbKFbTh9hP5WvCmtEQRNxyrpHhWoM+T0YjgW91boB4SMCYKnTS9eJhD50GNLjTeUeBVzApmOVbLZjS8KaKNLdhybF44WC5bJIeotquBrDA2YocWnD4V8yA/oP6Jm3FCiXMMhU0+wMsB5esedbGR1PjVFmNPPyuYSUmrj/tCCSX2zjq2EY6i3MmuOpYsWpY9ZeQJ3kj/eQqwxTI+tYvYKfh3VMPHiZmYU0z75VCgG0xLymVCcA1Pe50LxEmopc5YmITcw0VnwvYebUPvCxnAhAVhe/b/kS0b0qo18SYQYLaauN5dFSvPKveMF1yT9/2X8anx8ZFR8A/zPP54hDv/qAQwcgGZgCHs6epJzugF6AZTViN4Dz2Gxl0dPwddtAN/crF0ug+RbVzrnA1Rot062AYTc6jjJHBTT2IVrEwAUp27vHpsAaLgamecF38ZNLY1aB4MOxhI30HR+5/d93kbWRxn5ofMOgFtY64/auwCqLrhxD+zS790/4wsP6qLP6iAnsQcMHQ9YH/LTzw198/Swq7fkuvIXAPdfB/NyIfV2bEougLGj7DdfMETd70nr8GONyN3fI++opkAx5tSoygXojxs7ogOny47HxzlovjnmWgXwx5+Tf7WzPopOB2DQAQzoQScD0MgHOBxmTi/ngEuIiaHXq+FZF4J/I38DqnwZrEnuBB8AAAAASUVORK5CYII=" alt="Andreo Advocacia">
+  <h1>Calculadora de Investimento em Leilão</h1>
+  <p>Sala Comercial 137 — Centro Empresarial Pereira Barreto — Santo André/SP</p>
+</header>
+
+<div class="wrap">
+  <div class="grid">
+    <div class="card">
+      <h2>Premissas Editáveis</h2>
+
+      <label>Valor pago no leilão (lance)</label>
+      <input type="text" id="valorPago" value="126.840,72">
+      <div class="hint">Padrão: mínimo da 2ª praça (34,88% de desconto sobre a avaliação)</div>
+
+      <label>Valor de mercado (VM) para revenda</label>
+      <input type="text" id="vm" value="187.333,33">
+      <div class="presets">
+        <button class="preset-btn active" id="btnLaudo" onclick="setVM(187333.33,'btnLaudo')">Laudo oficial<br>R$ 187.333,33</button>
+        <button class="preset-btn" id="btnProjecao" onclick="setVM(253213.97,'btnProjecao')">Projeção Andreo<br>R$ 253.213,97</button>
+      </div>
+
+      <label>Débitos/custos extras não previstos</label>
+      <input type="text" id="debitos" value="0,00">
+      <div class="hint">IPTU/condomínio pretéritos já são sub-rogados na arrematação — deixe 0 salvo situação excepcional</div>
+
+      <label>Reforma / benfeitorias</label>
+      <input type="text" id="reforma" value="0,00">
+
+      <label>Prazo até a revenda</label>
+      <div class="toggle-row">
+        <button class="toggle-btn active" id="btn6" onclick="setPeriodo(6,'btn6')">6 meses</button>
+        <button class="toggle-btn" id="btn12" onclick="setPeriodo(12,'btn12')">12 meses</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Premissas Fixas</h2>
+      <ul class="fixed-list">
+        <li><span>Comissão do leiloeiro</span><span>5% sobre o lance</span></li>
+        <li><span>Assessoria jurídica (Andreo)</span><span>10% sobre o lance</span></li>
+        <li><span>ITBI</span><span>3% sobre o lance</span></li>
+        <li><span>Registro (1º CRI)</span><span>R$ 2.964,83</span></li>
+        <li><span>Cartório / despesas</span><span>R$ 4.778,12</span></li>
+        <li><span>Comissão de venda (revenda)</span><span>6% sobre o VM</span></li>
+        <li><span>IR sobre o ganho de capital</span><span>15%</span></li>
+        <li><span>Condomínio (holding)</span><span>R$ 962,02/mês</span></li>
+        <li><span>IPTU (holding)</span><span>R$ 116,18/mês</span></li>
+      </ul>
+      <div class="note">
+        Os débitos históricos de IPTU e condomínio (fixados no edital) são sub-rogados no valor da arrematação e não oneram o arrematante — por isso não entram no custo de aquisição.
+      </div>
+    </div>
+  </div>
+
+  <div class="grid" style="margin-top:22px;">
+    <div class="card results">
+      <h2>Custo Total de Aquisição</h2>
+      <div class="big"><span class="value" id="outCustoTotal">—</span><span class="label">Custo total</span></div>
+      <div class="metric"><span class="label">Lance</span><span class="value" id="outValorPago">—</span></div>
+      <div class="metric"><span class="label">Comissão leiloeiro (5%)</span><span class="value" id="outComissaoLeiloeiro">—</span></div>
+      <div class="metric"><span class="label">Assessoria jurídica (10%)</span><span class="value" id="outAssessoria">—</span></div>
+      <div class="metric"><span class="label">ITBI (3%)</span><span class="value" id="outItbi">—</span></div>
+      <div class="metric"><span class="label">Registro + Cartório</span><span class="value" id="outCartorio">—</span></div>
+      <div class="metric"><span class="label">Débitos extras + reforma</span><span class="value" id="outExtras">—</span></div>
+    </div>
+
+    <div class="card results">
+      <h2>Retorno Projetado</h2>
+      <div class="big"><span class="value gold" id="outLucro">—</span><span class="label">Lucro líquido estimado</span></div>
+      <div class="metric"><span class="label">Valor de venda líquido (após comissão 6%)</span><span class="value" id="outVendaLiquida">—</span></div>
+      <div class="metric"><span class="label">Ganho de capital (antes do IR)</span><span class="value" id="outDiferenca">—</span></div>
+      <div class="metric"><span class="label">IR sobre o ganho (15%)</span><span class="value" id="outIR">—</span></div>
+      <div class="metric"><span class="label">Custos de holding (condomínio+IPTU)</span><span class="value" id="outHolding">—</span></div>
+      <div class="metric"><span class="label">% de ganho sobre o custo total</span><span class="value gold" id="outPctGanho">—</span></div>
+      <div class="metric"><span class="label">TIR anualizada (Newton-Raphson)</span><span class="value gold" id="outTIR">—</span></div>
+    </div>
+  </div>
+
+  <div class="note" style="margin-top:22px; text-align:center;">
+    Simulação estimativa, sem caráter de garantia de rentabilidade. Valores de referência: edital do processo 1015608-13.2020.8.26.0554 (6ª Vara Cível de Santo André) e laudo homologado em 08/01/2026. Consulte a Andreo Advocacia antes de qualquer decisão de investimento.
+  </div>
+</div>
+
+<footer>
+  Andreo Advocacia — OAB/SP 287.684 — Mooca, São Paulo/SP — rodrigo@andreoadv.com.br — @andreoadv
+</footer>
+
+<script>
+  let vmValue = 187333.33;
+  let periodo = 6;
+
+  function parseBR(str){
+    return parseFloat(str.replace(/\./g,'').replace(',','.')) || 0;
+  }
+  function fmtBR(v){
+    return 'R$ ' + v.toLocaleString('pt-BR', {minimumFractionDigits:2, maximumFractionDigits:2});
+  }
+  function pctBR(v, d){
+    d = d===undefined?2:d;
+    return (v*100).toLocaleString('pt-BR', {minimumFractionDigits:d, maximumFractionDigits:d}) + '%';
+  }
+
+  function setVM(v, btnId){
+    vmValue = v;
+    document.getElementById('vm').value = v.toLocaleString('pt-BR', {minimumFractionDigits:2, maximumFractionDigits:2});
+    ['btnLaudo','btnProjecao'].forEach(id => document.getElementById(id).classList.remove('active'));
+    document.getElementById(btnId).classList.add('active');
+    calcular();
+  }
+  function setPeriodo(p, btnId){
+    periodo = p;
+    ['btn6','btn12'].forEach(id => document.getElementById(id).classList.remove('active'));
+    document.getElementById(btnId).classList.add('active');
+    calcular();
+  }
+
+  // TIR via Newton-Raphson (implementado do zero)
+  function npv(rate, cfs){
+    let s = 0;
+    for(let t=0;t<cfs.length;t++) s += cfs[t] / Math.pow(1+rate, t);
+    return s;
+  }
+  function dnpv(rate, cfs){
+    let s = 0;
+    for(let t=1;t<cfs.length;t++) s += -t*cfs[t] / Math.pow(1+rate, t+1);
+    return s;
+  }
+  function tirNewton(cfs, guess){
+    let rate = guess===undefined?0.02:guess;
+    for(let i=0;i<200;i++){
+      const f = npv(rate, cfs);
+      const fp = dnpv(rate, cfs);
+      if (Math.abs(fp) < 1e-14) break;
+      const newRate = rate - f/fp;
+      if (Math.abs(newRate-rate) < 1e-9) return newRate;
+      rate = newRate;
+    }
+    return rate;
+  }
+
+  function calcular(){
+    const valorPago = parseBR(document.getElementById('valorPago').value);
+    const vm = parseBR(document.getElementById('vm').value);
+    const debitos = parseBR(document.getElementById('debitos').value);
+    const reforma = parseBR(document.getElementById('reforma').value);
+
+    const comissaoLeiloeiro = valorPago * 0.05;
+    const assessoria = valorPago * 0.10;
+    const itbi = valorPago * 0.03;
+    const registro = 2964.83, cartorio = 4778.12;
+    const custoTotal = valorPago + comissaoLeiloeiro + assessoria + itbi + registro + cartorio + debitos + reforma;
+
+    const comissaoVenda = vm * 0.06;
+    const vendaLiquida = vm - comissaoVenda;
+    const diferenca = vendaLiquida - custoTotal;
+    const irVenda = Math.max(diferenca,0) * 0.15;
+
+    const condMensal = 962.02, iptuMensal = 116.18;
+    const holdingMensal = condMensal + iptuMensal;
+    const custosHolding = holdingMensal * periodo;
+
+    const lucroFinal = diferenca - irVenda - custosHolding;
+    const pctGanho = lucroFinal / custoTotal;
+
+    // fluxo de caixa mensal p/ TIR
+    const cfs = [-custoTotal];
+    for(let m=1;m<periodo;m++) cfs.push(-holdingMensal);
+    cfs.push(-holdingMensal + (vendaLiquida - irVenda));
+    const tirMensal = tirNewton(cfs);
+    const tirAnual = Math.pow(1+tirMensal,12)-1;
+
+    document.getElementById('outCustoTotal').textContent = fmtBR(custoTotal);
+    document.getElementById('outValorPago').textContent = fmtBR(valorPago);
+    document.getElementById('outComissaoLeiloeiro').textContent = fmtBR(comissaoLeiloeiro);
+    document.getElementById('outAssessoria').textContent = fmtBR(assessoria);
+    document.getElementById('outItbi').textContent = fmtBR(itbi);
+    document.getElementById('outCartorio').textContent = fmtBR(registro+cartorio);
+    document.getElementById('outExtras').textContent = fmtBR(debitos+reforma);
+
+    document.getElementById('outLucro').textContent = fmtBR(lucroFinal);
+    document.getElementById('outVendaLiquida').textContent = fmtBR(vendaLiquida);
+    document.getElementById('outDiferenca').textContent = fmtBR(diferenca);
+    document.getElementById('outIR').textContent = fmtBR(irVenda);
+    document.getElementById('outHolding').textContent = fmtBR(custosHolding);
+    document.getElementById('outPctGanho').textContent = pctBR(pctGanho);
+    document.getElementById('outTIR').textContent = pctBR(tirAnual);
+  }
+
+  ['valorPago','vm','debitos','reforma'].forEach(id=>{
+    document.getElementById(id).addEventListener('input', calcular);
+  });
+  calcular();
+</script>
+</body>
+</html>
